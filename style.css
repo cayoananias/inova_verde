@@ -1,0 +1,134 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+}
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #00bf63;
+            border-bottom: 1px solid #ccc;
+
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            }
+
+        .botao {
+            font-size: 20px;
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            
+        }
+
+                h1, h2 {
+                    size: 50px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+                .foto {
+
+                    height: 60px;
+        }
+
+        .titulu{
+            font-size: 70px;
+            color: #fff;
+            padding: 0px 0px;  
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        body{
+            background-image: url("images/bcgimg.png");
+              background-size: cover;
+             background-attachment: fixed;
+             background-position: center;
+        }
+
+.container-slider {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.container-images {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 780px;
+  background-color: #ccc;
+}
+
+.slider {
+  opacity: 0;
+  transition: opacity .2s;
+  position: absolute;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ccc;
+}
+
+.on {
+  opacity: 1;
+}
+
+#prev-button, #next-button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#prev-button img, #next-button img {
+  width: 100%;
+  height: 100%;
+}
+
+#prev-button {
+  transform: rotate(180deg);
+}
+
+.tremmuitolegal {
+    align-items: center;
+    width: calc(680px + 30px);
+  height: calc(580px + 20px); 
+  border-radius: 10px; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.texo{
+color: #fff;
+font-size: medium;
+background-color: #ccc;
+border-radius: 2%;
+}
