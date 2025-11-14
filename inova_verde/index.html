@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inova Verde - EXPOTEC 2025</title>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* ========= style.css ========= */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
+    body {
+      min-height:100vh;
+      background-image: url("images/bcgimg.png");
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      padding-bottom: 80px;
+      color:#222;
+    }
+
+    header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 20px;
+      background-color:#f5f1e6; /* creme */
+      border-bottom:1px solid #d7d2c7;
+      position:sticky; top:0; z-index:1000;
+    }
+    .foto{ height:60px; }
+    .nav .botao {
+      font-size:16px; margin-left:10px; padding:8px 14px; color:#333; text-decoration:none; border-radius:18px; font-weight:700;
+    }
+
+    .titulu {
+      font-size:56px; color:#fff; position:relative; text-align:center;
+      text-shadow:0 2px 6px rgba(0,0,0,0.35); margin:20px 0;
+    }
+
+    main { max-width:1200px; margin:18px auto; padding:0 16px; }
+
+    .card { background:rgba(255,255,255,0.9); padding:14px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.08); }
+
+    .texp { margin:12px 0; }
+
+    /* ========== Simulação (layout) ========== */
+    .simule { margin:24px 0; }
+    .simule-row { display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; }
+    .simule-ui { flex:1 1 420px; min-width:300px; }
+    .viewer-card { width:420px; min-width:280px; }
+
+    /* Chart area */
+    .chart-box { background:#fff; padding:12px; border-radius:8px; }
+    canvas { width:100% !important; height:320px !important; }
+
+    /* Visualizador panorama */
+    .pan-viewer {
+      width:100%; height:300px; background:#000; border-radius:8px; overflow:hidden; position:relative;
+      touch-action: pan-y; display:flex; align-items:center; justify-content:center; user-select:none;
+    }
+    .pan-viewer img {
+      position:absolute; left:0; top:50%; transform:translateY(-50%); height:100%; width:auto;
+      will-change: transform; pointer-events:none; -webkit-user-drag:none;
+    }
+    .viewer-hint { font-size:13px; color:#333; margin-top:8px; }
+
+    /* Ícones ações */
+    .sustentabilidade { margin:18px 0; }
+    .icons-row { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
+    .icon { width:120px; text-align:center; }
+    .icon img { width:64px; height:64px; object-fit:contain; display:block; margin:0 auto 8px; }
+
+    .projeto-by { margin-top:12px; font-weight:700; color:#333; }
+
+    /* Responsivo */
+    @media (max-width:900px){
+      .simule-row { flex-direction:column-reverse; }
+      .titulu { font-size:44px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html"><img class="foto" src="images/Logo.png" alt="Logo"></a>
+    <nav class="nav">
+      <a class="botao" href="#simule">Compare</a>
+      <a class="botao" href="#contato">Contato</a>
+      <a class="botao" href="#sobre-nos">Sobre Nós</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1 class="titulu">Inova Verde</h1>
+
+    <section class="texp card">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. (Texto de exemplo — substituir pelo conteúdo real do folder)</p>
+    </section>
+
+    <!-- ========== SIMULAÇÃO ========== -->
+    <section id="simule" class="simule card">
+      <h2>Simule sua Economia</h2>
+      <div class="simule-row">
+        <!-- controles e gráficos -->
+        <div class="simule-ui">
+          <div class="chart-box">
+            <h3>Simulação Mensal de Economia</h3>
+            <canvas id="barChart"></canvas>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="chart-box">
+            <h3>Evolução Anual (Estimativa)</h3>
+            <canvas id="lineChart"></canvas>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card" style="margin-top:12px;">
+            <label for="consumo">Consumo médio mensal (R$):</label>
+            <input id="consumo" type="number" value="1600" min="0" style="width:140px; margin-left:8px;" />
+            <div style="height:8px"></div>
+            <label for="pv">Custo instalação placas (R$):</label>
+            <input id="pv" type="number" value="12000" min="0" style="width:140px; margin-left:8px;" />
+            <div style="height:8px"></div>
+            <label for="battery">Custo bateria (R$):</label>
+            <input id="battery" type="number" value="8000" min="0" style="width:140px; margin-left:8px;" />
+            <div style="height:10px"></div>
+            <button id="runSim" style="padding:8px 14px; background:#00bf63; color:#fff; border:none; border-radius:8px; cursor:pointer;">Rodar Simulação</button>
+          </div>
+        </div>
+
+        <!-- visualizador panorama -->
+        <div class="viewer-card">
+          <h3>Visualizador 360</h3>
+          <div id="pan-viewer" class="pan-viewer" tabindex="0" aria-label="Visualizador panorâmico 360, arraste para girar">
+            <img id="pan-img" src="images/360/panorama.jpg" alt="Panorama 360" draggable="false" />
+          </div>
+          <p class="viewer-hint">Arraste com o mouse ou toque para girar</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SUSTENTABILIDADE / ÍCONES geradas ========= -->
+    <section class="sustentabilidade card">
+      <h2>Nossas Ações</h2>
+      <div class="icons-row">
+        <div class="icon"><img src="images/icon-recycle.png" alt="Reciclagem"><p>Reciclagem</p></div>
+        <div class="icon"><img src="images/icon-water.png" alt="Água de reúso"><p>Água de reúso</p></div>
+        <div class="icon"><img src="images/icon-bike.png" alt="Bicicletário"><p>Bicicletário</p></div>
+        <div class="icon"><img src="images/icon-ev.png" alt="Ponto EV"><p>Ponto de recarga EV</p></div>
+        <div class="icon"><img src="images/icon-maquete.png" alt="Maquete"><p>Maquete</p></div>
+      </div>
+      <p class="projeto-by">Projeto realizado por alunos do João Ramalho, turmas de adm e eds</p>
+    </section>
+
+    <section id="sobre-nos" class="sobre-nos card" style="margin-top:16px;">
+      <h2>Sobre Nós</h2>
+      <div class="sobre-text">
+        <p>COLE AQUI O TEXTO DO FOLDER</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========= script.js ========= -->
+  <script>
+    // ======== LÓGICA DOS GRÁFICOS (Chart.js) e simulação ========
+    // Variáveis iniciais
+    const consumoInput = document.getElementById('consumo');
+    const pvInput = document.getElementById('pv');
+    const batteryInput = document.getElementById('battery');
+    const runBtn = document.getElementById('runSim');
+
+    // Dados iniciais de exemplo
+    const labelsMonths = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+    // Cria Bar Chart (comparativo mensal sem/placas/bateria)
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Sem tecnologia','Placas fotovoltaicas','Bateria'],
+        datasets: [{
+          label: 'Despesa média mensal (R$)',
+          data: [1600, 1200, 800],
+          backgroundColor: ['#d9534f','#f0ad4e','#5cb85c']
+        }]
+      },
+      options: {
+        responsive:true,
+        plugins:{ legend:{ display:false } },
+        scales:{ y:{ beginAtZero:true } }
+      }
+    });
+
+    // Cria Line Chart (evolução anual estimada)
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: labelsMonths,
+        datasets: [
+          { label:'Sem tecnologia', data: [], borderColor:'#d9534f', fill:false },
+          { label:'Com Placas', data: [], borderColor:'#5cb85c', fill:false }
+        ]
+      },
+      options: { responsive:true, plugins:{ legend:{ position:'bottom' } }, scales:{ y:{ beginAtZero:true } } }
+    });
+
+    // Função de simulação simples:
+    // - consumoMensal: valor atual de conta elétrica (R$)
+    // - pvCost: custo de instalação (R$)
+    // - batteryCost: custo da bateria (R$)
+    // Saídas:
+    // - economia mensal estimada com placas = consumo * fator (ex: 25% a 60% dependendo do custo)
+    // - economia com bateria reduz variação (estimativa)
+    function runSimulation(consumoMensal, pvCost, batteryCost) {
+      // Parâmetros model simples (ajuste conforme necessidade)
+      // eficiência das placas depende do investimento (simples escala)
+      const pvEffectiveness = Math.max(0.15, Math.min(0.65, pvCost / 20000)); // 0.15..0.65
+      const batteryEffectiveness = Math.max(0.05, Math.min(0.4, batteryCost / 15000)); // 0.05..0.4
+
+      // economia mensal estimada
+      const economiaPlacas = consumoMensal * pvEffectiveness;
+      const economiaBateria = consumoMensal * batteryEffectiveness * 0.5; // bateria complementa parcialmente
+
+      // Ajusta gráficos:
+      const barValues = [
+        Math.round(consumoMensal),
+        Math.round(Math.max(0, consumoMensal - economiaPlacas)),
+        Math.round(Math.max(0, consumoMensal - economiaPlacas - economiaBateria))
+      ];
+
+      // Gera evolução anual (redução acumulada simples)
+      const monthlyNoTech = [];
+      const monthlyWithPV = [];
+      let base = consumoMensal;
+      for (let m=0;m<12;m++){
+        // sem tecnologia mantém-se (com leve reajuste simulado)
+        monthlyNoTech.push(Math.round(base * (1 + 0.01*m)));
+        // com placas: reduz consumo com economiaPlacas (não linear)
+        const seasonalFactor = 1 - 0.02*Math.sin(m/12*Math.PI*2); // leve variação
+        monthlyWithPV.push(Math.round(base * seasonalFactor - economiaPlacas));
+      }
+
+      return { barValues, monthlyNoTech, monthlyWithPV };
+    }
+
+    function updateCharts() {
+      const consumo = Number(consumoInput.value) || 0;
+      const pv = Number(pvInput.value) || 0;
+      const bat = Number(batteryInput.value) || 0;
+
+      const res = runSimulation(consumo, pv, bat);
+
+      // Atualiza barChart
+      barChart.data.datasets[0].data = res.barValues;
+      barChart.update();
+
+      // Atualiza lineChart
+      lineChart.data.datasets[0].data = res.monthlyNoTech;
+      lineChart.data.datasets[1].data = res.monthlyWithPV;
+      lineChart.update();
+    }
+
+    // Inicializa com valores padrão
+    updateCharts();
+
+    // Evento do botão
+    runBtn.addEventListener('click', () => updateCharts());
+
+    // Atualiza dinamicamente ao mudar inputs (opcional)
+    consumoInput.addEventListener('change', updateCharts);
+    pvInput.addEventListener('change', updateCharts);
+    batteryInput.addEventListener('change', updateCharts);
+
+    // ======== Visualizador panorama (imagem equiretangular) ========
+    (function setupPanorama() {
+      const viewer = document.getElementById('pan-viewer');
+      const img = document.getElementById('pan-img');
+      if (!viewer || !img) return;
+      let isDown = false;
+      let startX = 0;
+      let offset = 0;
+      const speed = 0.6;
+
+      function fitImage() {
+        img.style.transform = `translateY(-50%) translateX(${offset}px)`;
+      }
+
+      function pointerDown(e) {
+        isDown = true;
+        startX = e.touches ? e.touches[0].clientX : e.clientX;
+        viewer.classList.add('dragging');
+      }
+      function pointerMove(e) {
+        if (!isDown) return;
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const dx = x - startX;
+        startX = x;
+        offset += dx * speed;
+        const imgW = img.getBoundingClientRect().width;
+        const vw = viewer.getBoundingClientRect().width;
+        if (imgW <= vw) {
+          img.style.transform = `translateY(-50%) translateX(0px)`;
+          return;
+        }
+        if (Math.abs(offset) > imgW) offset = offset % imgW;
+        img.style.transform = `translateY(-50%) translateX(${offset}px)`;
+      }
+      function pointerUp() { isDown = false; viewer.classList.remove('dragging'); }
+
+      viewer.addEventListener('mousedown', pointerDown);
+      window.addEventListener('mousemove', pointerMove);
+      window.addEventListener('mouseup', pointerUp);
+      viewer.addEventListener('touchstart', pointerDown, { passive: true });
+      viewer.addEventListener('touchmove', pointerMove, { passive: true });
+      viewer.addEventListener('touchend', pointerUp);
+      window.addEventListener('resize', fitImage);
+      if (img.complete) fitImage(); else img.addEventListener('load', fitImage);
+    })();
+  </script>
+</body>
+</html>
