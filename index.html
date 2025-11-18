@@ -8,6 +8,9 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <!-- Model Viewer (3D) -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
   <style>
     /* ========= style.css ========= */
     * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
@@ -26,7 +29,7 @@
       align-items:center;
       justify-content:space-between;
       padding:12px 20px;
-      background-color:#f5f1e6; /* creme */
+      background-color:#f5f1e6;
       border-bottom:1px solid #d7d2c7;
       position:sticky; top:0; z-index:1000;
     }
@@ -52,11 +55,9 @@
     .simule-ui { flex:1 1 420px; min-width:300px; }
     .viewer-card { width:420px; min-width:280px; }
 
-    /* Chart area */
     .chart-box { background:#fff; padding:12px; border-radius:8px; }
     canvas { width:100% !important; height:320px !important; }
 
-    /* Visualizador panorama */
     .pan-viewer {
       width:100%; height:300px; background:#000; border-radius:8px; overflow:hidden; position:relative;
       touch-action: pan-y; display:flex; align-items:center; justify-content:center; user-select:none;
@@ -67,13 +68,18 @@
     }
     .viewer-hint { font-size:13px; color:#333; margin-top:8px; }
 
-    /* Ícones ações */
-    .sustentabilidade { margin:18px 0; }
-    .icons-row { display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
-    .icon { width:120px; text-align:center; }
-    .icon img { width:64px; height:64px; object-fit:contain; display:block; margin:0 auto 8px; }
+    /* MAQUETE 3D */
+    .maquete3d {
+      margin-top:20px;
+      text-align:center;
+    }
 
-    .projeto-by { margin-top:12px; font-weight:700; color:#333; }
+    .maquete3d model-viewer {
+      width:100%;
+      max-width:500px;
+      height:500px;
+      margin:auto;
+    }
 
     /* Responsivo */
     @media (max-width:900px){
@@ -103,7 +109,6 @@
     <section id="simule" class="simule card">
       <h2>Simule sua Economia</h2>
       <div class="simule-row">
-        <!-- controles e gráficos -->
         <div class="simule-ui">
           <div class="chart-box">
             <h3>Simulação Mensal de Economia</h3>
@@ -136,15 +141,34 @@
         <!-- visualizador panorama -->
         <div class="viewer-card">
           <h3>Visualizador 360</h3>
-          <div id="pan-viewer" class="pan-viewer" tabindex="0" aria-label="Visualizador panorâmico 360, arraste para girar">
+          <div id="pan-viewer" class="pan-viewer">
             <img id="pan-img" src="images/360/panorama.jpg" alt="Panorama 360" draggable="false" />
           </div>
           <p class="viewer-hint">Arraste com o mouse ou toque para girar</p>
         </div>
       </div>
+
+      <!-- ========== MAQUETE 3D ========== -->
+      <div class="maquete3d">
+        <h3>Maquete 3D do Projeto</h3>
+
+        <model-viewer src="models/predio.glb"
+                      alt="Maquete 3D do prédio"
+                      auto-rotate
+                      auto-rotate-delay="0"
+                      rotation-per-second="20deg"
+                      camera-controls
+                      shadow-intensity="1"
+                      exposure="1.3"
+                      ar
+                      style="background:#f4f4f4; border-radius:10px;">
+        </model-viewer>
+
+        <p class="viewer-hint">Gire a maquete arrastando com o mouse</p>
+      </div>
+      <!-- ================================= -->
     </section>
 
-    <!-- ========== SUSTENTABILIDADE / ÍCONES geradas ========= -->
     <section class="sustentabilidade card">
       <h2>Nossas Ações</h2>
       <div class="icons-row">
@@ -165,7 +189,6 @@
     </section>
 
   </main>
-
   <!-- ========= script.js ========= -->
   <script>
     // ======== LÓGICA DOS GRÁFICOS (Chart.js) e simulação ========
@@ -324,5 +347,6 @@
       if (img.complete) fitImage(); else img.addEventListener('load', fitImage);
     })();
   </script>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </body>
 </html>
